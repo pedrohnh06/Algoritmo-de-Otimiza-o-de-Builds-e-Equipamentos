@@ -1,5 +1,6 @@
 from random import randint
 
+# Classe responsável por armazenar os atributos de um equipamento
 class Equipamento:
 
     def __init__(self, nome_equipamento, bonus_ataque, bonus_dano_critico, raridade, chance_critico):
@@ -9,6 +10,8 @@ class Equipamento:
         self.raridade = raridade
         self.chance_critico = chance_critico
 
+# Classe principal do sistema de combate.
+# Um personagem possui atributos base, inventário e equipamento equipado.
 class Personagem:
 
     def __init__(self, nome, ataque_base, dano_critico_base, chance_critico):
@@ -20,11 +23,8 @@ class Personagem:
         self.inventario = []
 
     def equipar_item(self, equipamento):
-         
         self.inventario.append(equipamento)
         self.equipamento_atual = equipamento
-
-        return self.equipamento_atual, self.inventario
 
     def calcular_status_finais(self):
         self.ataque_final = self.ataque_base
@@ -49,20 +49,48 @@ class Personagem:
         else:
             return golpe_normal
 
-    def calcular_dps_medio(self):
+    def calcular_dano_medio(self):
+        """
+        Simula 1000 ataques para estimar o dano médio causado
+        pelo personagem com o equipamento atualmente equipado.
+        """
         dano_total = 0
+
         for i in range(1000):
             dano_total += self.simular_ataque()
         media_dano = dano_total/1000
+
         return media_dano, dano_total
 
-p1 = Personagem("Galahad", 525, 750, 20)
-e1 = Equipamento("Necro Espada", 10000, 13000, "Lendária", 99)
+p1 = Personagem("Player 1", 525, 700, 10)
+e1 = Equipamento("Espada de Diamante", 1500, 1900, "Épica", 25)
+e2 = Equipamento("Espada Básica", 250, 400, "Comum", 18)
+e3 = Equipamento("Mjonir", 5500, 6500, "Mítica", 45)
+bau_de_armas = [e1, e2, e3]
 
-p1.equipar_item(e1)
+def encontrar_melhor_build():
+    """
+    Testa todas as armas disponíveis no baú e identifica
+    qual gera o maior dano médio.
+    """
+    if len(bau_de_armas) == 0:
+        print("O baú está vazio! Não há armas para testar")
+        return
 
-p1.calcular_status_finais()
-print(f"Ataque final do {p1.nome}: {p1.ataque_final}\nPorcentagem de Crítico:{p1.porcentagem_critica_final}%")
+    maior_dps = 0
+    melhor_item = ""
 
-print(f"Testando a rotação de ataques")
-print(p1.calcular_dps_medio())
+    for arma in bau_de_armas:
+        p1.equipar_item(arma)
+        p1.calcular_status_finais()
+
+        media_atual, total_atual = p1.calcular_dano_medio()
+
+        if media_atual > maior_dps:
+            maior_dps = media_atual
+            melhor_item = arma.nome_equipamento
+
+    print(f"\nA melhor arma é: {melhor_item} com DPS médio de {maior_dps:.2f}")
+
+#Código Principal:
+encontrar_melhor_build()
