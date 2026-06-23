@@ -4,7 +4,7 @@ from random import randint
 # Um personagem possui atributos base, inventário e equipamento equipado.
 class Personagem:
 
-    def __init__(self, nome, ataque_base, dano_critico_base, chance_critico):
+    def __init__(self, nome, ataque_base, dano_critico_base, chance_critico, hp_maximo):
         self.nome = nome
         self.ataque_base = ataque_base
         self.dano_critico_base = dano_critico_base
@@ -14,6 +14,9 @@ class Personagem:
         self.ataque_final = ataque_base
         self.porcentagem_critica_final = chance_critico
         self.dano_critico_final = dano_critico_base 
+        self.hp_maximo = hp_maximo
+        self.hp_atual = hp_maximo
+
 
     def equipar_item(self, equipamento) -> None:
         self.inventario.append(equipamento)
