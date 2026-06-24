@@ -1,9 +1,5 @@
 import time
-
-from personagem import Personagem
-from equipamento import Equipamento
-from inimigo import Inimigo
-
+# Função principal do sistema de combate.
 def arena_batalha(heroi, chefe):
 
     print(f"\n{'='*45}")
@@ -17,9 +13,8 @@ def arena_batalha(heroi, chefe):
 
         #Turno do heroi
         ataque = heroi.simular_ataque()
-        chefe.receber_dano(ataque)
-
         dano_causado = chefe.receber_dano(ataque)
+
         print(f"🗡️ {heroi.nome} desferiu um golpe! causando {dano_causado:.0f}, {chefe.nome} ficou com {chefe.hp_atual:.0f} de HP.")
         
         if chefe.hp_atual <= 0:
