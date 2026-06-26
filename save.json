@@ -5,6 +5,6 @@
     "chance_critico": 10,
     "dano_critico_base": 700,
     "esquiva": 10,
-    "arma_atual": "Mjonir",
-    "armadura_atual": "Armadura de Vibranium"
+    "arma_atual": "",
+    "armadura_atual": ""
 }

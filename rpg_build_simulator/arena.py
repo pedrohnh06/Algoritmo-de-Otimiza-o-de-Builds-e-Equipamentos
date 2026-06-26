@@ -35,7 +35,7 @@ def arena_batalha(heroi, chefe):
             heroi.armadura_atual = None
             heroi.calcular_status_finais()
 
-            heroi.salvar_estado
+            heroi.salvar_estado()
             break
 
         turno +=  1

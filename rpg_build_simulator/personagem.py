@@ -21,21 +21,27 @@ class Personagem:
         self.esquiva_final = esquiva
 
 
-    def equipar_item(self, equipamento) -> None:
+    def equipar_item(self, equipamento, rodar_autosave = True) -> None:
         #Equipa os itens criados
-        self.inventario.append(equipamento)
+        if equipamento not in self.inventario:
+            self.inventario.append(equipamento)
 
         if isinstance(equipamento, Arma):
             self.arma_atual = equipamento
-            print(f"🗡️ Arma [{equipamento.nome_equipamento}] equipada com sucesso!")
+            if rodar_autosave:
+                print(f"🗡️ Arma [{equipamento.nome_equipamento}] equipada com sucesso!")
+
         elif isinstance(equipamento, Armadura):
             self.armadura_atual = equipamento
-            print(f"🛡️ Armadura [{equipamento.nome_equipamento}] vestida com sucesso!")
+            if rodar_autosave:
+                print(f"🛡️ Armadura [{equipamento.nome_equipamento}] vestida com sucesso!")
         else:
             print("⚠️ Tipo de equipamento desconhecido!")
         
-        self.calcular_status_finais
-        self.salvar_estado()
+        self.calcular_status_finais()
+
+        if rodar_autosave:
+            self.salvar_estado()
 
     def calcular_status_finais(self):
         # Reset para os valores base
@@ -53,9 +59,12 @@ class Personagem:
 
         if self.armadura_atual is not None:
             self.esquiva_final += self.armadura_atual.bonus_esquiva
-            self.hp_atual += self.armadura_atual.hp_adicional
+            self.hp_maximo_final += self.armadura_atual.hp_adicional
 
         self.porcentagem_critica_final = min(self.porcentagem_critica_final, 75)
+
+        if self.hp_atual > self.hp_maximo_final:
+            self.hp_atual = self.hp_maximo_final
 
     def simular_ataque(self):
         """
@@ -111,7 +120,6 @@ class Personagem:
             dados_carregados = json.load(arquivo)
 
         self.nome = dados_carregados["nome"]
-        self.hp_atual = dados_carregados["hp_atual"]
         self.ataque_base = dados_carregados["ataque_base"]
         self.chance_critico = dados_carregados["chance_critico"]
         self.dano_critico_base = dados_carregados["dano_critico_base"]
@@ -120,10 +128,11 @@ class Personagem:
         self.inventario = []
 
         for item in bau_de_armas:
-            if item.nome_equipamento in dados_carregados.get("arma_atual"):
+            if item.nome_equipamento == dados_carregados.get("arma_atual"):
                 self.equipar_item(item)
-            elif item.nome_equipamento in dados_carregados.get("armadura_atual"):
+            elif item.nome_equipamento == dados_carregados.get("armadura_atual"):
                 self.equipar_item(item)
 
 
         self.calcular_status_finais()
+        self.hp_atual = dados_carregados["hp_atual"]
