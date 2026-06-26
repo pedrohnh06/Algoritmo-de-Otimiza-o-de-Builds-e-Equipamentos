@@ -19,6 +19,7 @@ def arena_batalha(heroi, chefe):
         
         if chefe.hp_atual <= 0:
             print(f"\n👑 VITÓRIA! {chefe.nome} foi esmagado no turno {turno}!")
+            heroi.salvar_estado()
             break
         
         time.sleep(1)
@@ -29,6 +30,12 @@ def arena_batalha(heroi, chefe):
 
         if heroi.hp_atual <= 0: 
             print(f"\n💀 DERROTA! {heroi.nome} não resistiu e caiu em combate...")
+            heroi.inventario = []
+            heroi.arma_atual = None
+            heroi.armadura_atual = None
+            heroi.calcular_status_finais()
+
+            heroi.salvar_estado
             break
 
         turno +=  1

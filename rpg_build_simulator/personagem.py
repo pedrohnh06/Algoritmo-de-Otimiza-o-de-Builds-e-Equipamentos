@@ -1,5 +1,6 @@
 from random import randint
 from equipamento import Arma, Armadura
+import json
 
 class Personagem:
 
@@ -32,6 +33,9 @@ class Personagem:
             print(f"🛡️ Armadura [{equipamento.nome_equipamento}] vestida com sucesso!")
         else:
             print("⚠️ Tipo de equipamento desconhecido!")
+        
+        self.calcular_status_finais
+        self.salvar_estado()
 
     def calcular_status_finais(self):
         # Reset para os valores base
@@ -46,7 +50,6 @@ class Personagem:
             self.ataque_final = self.ataque_base + self.arma_atual.bonus_ataque
             self.porcentagem_critica_final += self.arma_atual.chance_critico
             self.dano_critico_final += self.arma_atual.bonus_dano_critico
-
 
         if self.armadura_atual is not None:
             self.esquiva_final += self.armadura_atual.bonus_esquiva
@@ -83,3 +86,44 @@ class Personagem:
         media_dano = dano_total/numero_simulacoes
 
         return media_dano, dano_total
+
+    def salvar_estado(self):
+        salvar_estado = {"nome": self.nome,
+        "hp_atual": self.hp_atual,
+        "ataque_base": self.ataque_base,
+        "chance_critico": self.chance_critico,
+        "dano_critico_base": self.dano_critico_base,
+        "esquiva": self.esquiva,
+        "arma_atual": "",
+        "armadura_atual": ""}
+
+        if self.arma_atual is not None:
+            salvar_estado["arma_atual"] = self.arma_atual.nome_equipamento
+
+        if self.armadura_atual is not None:
+            salvar_estado["armadura_atual"] = self.armadura_atual.nome_equipamento
+
+        with open("save.json", "w") as arquivo:
+            json.dump(salvar_estado, arquivo, indent=4)
+
+    def carregar_estado(self, bau_de_armas):
+        with open("save.json", "r") as arquivo:
+            dados_carregados = json.load(arquivo)
+
+        self.nome = dados_carregados["nome"]
+        self.hp_atual = dados_carregados["hp_atual"]
+        self.ataque_base = dados_carregados["ataque_base"]
+        self.chance_critico = dados_carregados["chance_critico"]
+        self.dano_critico_base = dados_carregados["dano_critico_base"]
+        self.esquiva = dados_carregados["esquiva"]
+
+        self.inventario = []
+
+        for item in bau_de_armas:
+            if item.nome_equipamento in dados_carregados.get("arma_atual"):
+                self.equipar_item(item)
+            elif item.nome_equipamento in dados_carregados.get("armadura_atual"):
+                self.equipar_item(item)
+
+
+        self.calcular_status_finais()

@@ -7,7 +7,7 @@ class Inimigo:
         self.hp_atual = hp_maximo
         self.esquiva = esquiva
         self.ataque_base = ataque_base
-    
+        
     def receber_dano(self, dano_bruto):
         dano_real = dano_bruto * (1 - (self.esquiva / 100))
         self.hp_atual -= dano_real

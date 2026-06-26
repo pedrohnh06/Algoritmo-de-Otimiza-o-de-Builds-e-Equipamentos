@@ -11,13 +11,18 @@ def encontrar_melhor_build(personagem, bau):
         melhor_item = ""
 
         for arma in bau:
-            personagem.equipar_item(arma)
-            personagem.calcular_status_finais()
 
-            media_atual, total_atual = personagem.calcular_dano_medio()
+            if isinstance(arma, Arma):
+                personagem.equipar_item(arma)
+                personagem.calcular_status_finais()
 
-            if media_atual > maior_dps:
-                maior_dps = media_atual
-                melhor_item = arma.nome_equipamento
+                media_atual, total_atual = personagem.calcular_dano_medio()
 
+                if media_atual > maior_dps:
+                    maior_dps = media_atual
+                    melhor_item = arma.nome_equipamento
+
+    if melhor_item != "":
         print(f"\nA melhor arma é: {melhor_item} com dano médio de {maior_dps:,.2f}")
+    else: 
+        print("\nNenhuma arma foi encontrada dentro do baú!")
