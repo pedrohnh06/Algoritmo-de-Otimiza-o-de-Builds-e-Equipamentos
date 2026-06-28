@@ -19,6 +19,7 @@ class Personagem:
         self.hp_atual = hp_maximo
         self.esquiva = esquiva
         self.esquiva_final = esquiva
+        self.hp_maximo_final = hp_maximo
 
 
     def equipar_item(self, equipamento, rodar_autosave = True) -> None:

@@ -9,7 +9,7 @@ def encontrar_melhor_build(personagem, bau):
         print("O baú está vazio! Não há armas para testar")
         return
 
-    maior_dps = 0
+    maior_dm = 0
     melhor_item = ""
 
     armar_original = personagem.arma_atual
@@ -22,8 +22,8 @@ def encontrar_melhor_build(personagem, bau):
 
             media_atual, total_atual = personagem.calcular_dano_medio()
 
-            if media_atual > maior_dps:
-                maior_dps = media_atual
+            if media_atual > maior_dm:
+                maior_dm = media_atual
                 melhor_item = arma.nome_equipamento
     
     if armar_original is not None:
@@ -34,6 +34,6 @@ def encontrar_melhor_build(personagem, bau):
     personagem.calcular_status_finais()
 
     if melhor_item != "":
-        print(f"\nA melhor arma é: {melhor_item} com dano médio de {maior_dps:,.2f}")
+        print(f"\nA melhor arma é: {melhor_item} com dano médio de {maior_dm:,.2f}")
     else: 
         print("\nNenhuma arma foi encontrada dentro do baú!") 

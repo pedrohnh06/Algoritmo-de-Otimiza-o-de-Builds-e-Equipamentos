@@ -30,6 +30,7 @@ def arena_batalha(heroi, chefe):
 
         if heroi.hp_atual <= 0: 
             print(f"\n💀 DERROTA! {heroi.nome} não resistiu e caiu em combate...")
+            print("Todos os itens foram perdidos")
             heroi.inventario = []
             heroi.arma_atual = None
             heroi.armadura_atual = None
