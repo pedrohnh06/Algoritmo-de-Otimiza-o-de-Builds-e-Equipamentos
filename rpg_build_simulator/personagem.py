@@ -51,6 +51,9 @@ class Personagem:
         self.dano_critico_final = self.dano_critico_base
         self.esquiva_final = self.esquiva
         self.hp_atual = self.hp_maximo
+        self.hp_maximo_final = self.hp_maximo
+
+        teto_antigo = self.hp_maximo_final
 
         #Calcula os status finais do personagem de acordo com os itens equipados
         if self.arma_atual is not None:
@@ -63,6 +66,9 @@ class Personagem:
             self.hp_maximo_final += self.armadura_atual.hp_adicional
 
         self.porcentagem_critica_final = min(self.porcentagem_critica_final, 75)
+
+        if self.hp_maximo_final > teto_antigo:
+            self.hp_atual += (self.hp_maximo_final - teto_antigo)
 
         if self.hp_atual > self.hp_maximo_final:
             self.hp_atual = self.hp_maximo_final
